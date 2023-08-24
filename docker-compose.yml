@@ -1,0 +1,54 @@
+version: '3.4'
+
+services:
+  internshipproject:
+    image: ${DOCKER_REGISTRY-}internshipproject
+    build:
+      context: .
+      dockerfile: InternshipProject/Dockerfile
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.1
+    ports:
+      - 9200:9200
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
+    networks:
+    - elastic
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:8.7.1
+    ports:
+     - 5601:5601
+    depends_on:
+     - elasticsearch
+    environment:
+     - ELASTICSEARCH_URL=http://localhost:9200
+    networks:
+     - elastic
+
+  sqldata:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sql-server-db
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    volumes:
+      - mssql-volume:/var/opt/mssql
+
+networks:
+   elastic:
+     driver: bridge
+
+volumes:
+    mssql-volume:
+    elasticsearch-data:
+    sftp-volume:

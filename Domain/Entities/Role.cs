@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Common;
 
 namespace Domain.Entities {
-    public class Role {
-        public Guid RoleId { get; set; }
-        public string RoleName { get; set; } = null!;
+    public class Role : BaseEntity {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = null!;
+        public virtual ICollection<User> Users { get; set; } = null!;
+        public virtual ICollection<Permission> Permissions { get; set; } = null!;
     }
 }

@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Common;
 
 namespace Domain.Entities {
-    public class Product {
-        public Guid ProductId { get; set; }
-        public string ProductName { get; set; } = null!;
-        public string ProductDescription { get; set; } = null!;
-        public decimal ReferenceRate { get; set; } 
-        public int FinanceMaxAmount { get; set; }
-        public int FinanceMinAmount { get; set; }
-        public Guid ApplicationId { get; set; }
+    public class Product : BaseEntity {
+        public Guid Id { get; set; }
+        public string Name { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public decimal ReferenceRate { get; set; }
+        public decimal FinanceMaxAmount { get; set; }
+        public decimal FinanceMinAmount { get; set; }
+        public virtual ICollection<ApplicationEntity>? Applications { get; set; }
     }
 }
